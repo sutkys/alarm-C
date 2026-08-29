@@ -4,11 +4,11 @@
 #include <string.h>
 
 int main() {
-    char buffer[100];
+    char buffer[110];
     char othr[20]; //uhhhm stuff that I'll just throw away, I'll put it here
     time_t currtime;
     bool played = false;
-    bool isChecked;
+    int checkd;
     struct tm *tim;
     int hrs;
     int mins;
@@ -24,24 +24,27 @@ int main() {
     while (!played) {
         currtime = time(NULL);
         tim = localtime(&currtime);
-        if(!isChecked && fgets(buffer, sizeof(buffer), timefile) != NULL) {
+        if(checkd <= 2 && fgets(buffer, sizeof(buffer), timefile) != NULL) {
             if (tim->tm_wday != 0 && tim->tm_wday <= 5) {
                 if (strncmp(buffer, "WEEKDAY", 7) == 0) {
                     int res = sscanf(buffer, "%s %d %c %d ", othr, &hrs, othr, &mins);
-                    //printf("resulllll %d\n", res);
+                    // printf("resulllsaaall %d\n", res);
                 }
             }
-            else if (strncmp(buffer, "WEEKEND", 7) == 0) {
-                sscanf(buffer, "%s %d %c %d ", othr, &hrs, othr, &mins);
+            else {
+                strncmp(buffer, "WEEKEND", 7);
+                int res = sscanf(buffer, "%s %d %c %d ", othr, &hrs, othr, &mins);
+                // printf("resulllll %d\n", res);
             }
-            isChecked = true;
-            printf("waited\n");
+            checkd++;
         }
         if (tim->tm_hour == hrs && tim->tm_min == mins) { // yes, there will be re-playing later.
-            printf("meows\n"); // will replace with sound playing logic and stuff
+            printf("time came\n"); // will replace with sound playing logic later aswell.
+            played = true;
         }
         continue;
     }
+
     fclose(timefile);
     return 0;
 }
